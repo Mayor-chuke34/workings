@@ -9,22 +9,22 @@ const UsersSchema = mongoose.Schema(
 
         username: {
             type: String,
-            required: [true, "Please enter your username"],
+            required: true, 
             unique: true,
         },
 
         Email: {
             type: String,
-            required: [true, "Please enter your email"],
+            required: true, 
             unique: true,
         },
         password: {
             type: String,
-            required: [true, "Please enter your password"],
+            required: true,
         },
         number: {
             type: String,
-            required: [true, "Please enter your phone number"],
+            required: true,
         },
     }
 )

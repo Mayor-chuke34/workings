@@ -1,7 +1,7 @@
 const  express = require ('express');
 const  mongoose = require ('mongoose') ;
 const Product = require('./models/product.model.js');
-const Users = require('./models/user.model.js');
+const User = require('./models/user.model.js');
 
 const app = express();
 const PORT = 3000;
@@ -24,7 +24,7 @@ app.post('/api/products',async (req, res) =>{
     app.get('/api/products',async (req, res) =>{
     try {
         const product = await Product.find({});
-        res.status(200).json(product);
+        res.status(200).json(products);
     } catch (error) {
         res.status(500).json({message:error.message});
     };
@@ -53,21 +53,21 @@ app.put("/api/products/:id", async (req, res) => {
         const updatedproduct = await Product.findById(id);
         res.status(200).json(updatedproduct)
     } catch (error) {
-        res.status(200).json({message: error.message});
+        res.status(500).json({message: error.message});
     } 
 });
 
-app.delete("/api/products/id", async (req,res) => {
+app.delete("/api/products/:id", async (req,res) => {
     try{
         const {id} = req.params;
-        const product = await product.findByIdAndDelete(id);
+        const product = await Product.findByIdAndDelete(id);
         if (!product) {
             return res.status(404).json({message: "product not found"});
         }
         const deleteproduct = await Product.findById(id);
         res.status(200).json(deleteproduct)
     } catch (error) {
-        res.status(200).json({message: error.message});
+        res.status(500).json({message: error.message});
     } 
 });
 
@@ -75,13 +75,13 @@ app.delete("/api/products/id", async (req,res) => {
 app.post("/api/users",async (req, res) =>{
     try {
         const user = await User.create(req.body);
-        res.status(200).json(user);
+        res.status(201).json(user);
     } catch (error) {
         res.status(500).json({message:error.message});
     };
 });
 
-app.get("/api/user",async (req, res) =>{
+app.get("/api/users",async (req, res) =>{
     try {
         const user = await User.find({});
         res.status(200).json(user);
@@ -90,11 +90,11 @@ app.get("/api/user",async (req, res) =>{
     };
 });
 
-app.get('/api/users/:id', async (req, res) => {
+app.get("/api/users/:id", async (req, res) => {
     try {
         const {id} = req.params;
-        const users = await Users.findById(id);
-        res.status(200).json(users);
+        const user = await User.findById(id);
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -103,7 +103,7 @@ app.get('/api/users/:id', async (req, res) => {
 app.put("/api/users/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await Users.findByIdAndUpdate(id, req.body);
+        const user = await User.findByIdAndUpdate(id, req.body);
 
         if (!user) {
             return res.status(404).json({message: "user not found"});
@@ -112,21 +112,21 @@ app.put("/api/users/:id", async (req, res) => {
         const updateduser = await User.findById(id);
         res.status(200).json(updateduser)
     } catch (error) {
-        res.status(200).json({message: error.message});
+        res.status(500).json({message: error.message});
     } 
 });
 
-app.delete("/api/user/id", async (req,res) => {
+app.delete("/api/user/:id", async (req,res) => {
     try{
         const {id} = req.params;
-        const user = await users.findByIdAndDelete(id);
+        const user = await User.findByIdAndDelete(id);
         if (!user) {
-            return res.status(404).json({message: "users not found"});
+            return res.status(404).json({message: "user not found"});
         }
-        const deleteproduct = await Users.findById(id);
+        const deleteuser = await User.findById(id);
         res.status(200).json(deleteuser)
     } catch (error) {
-        res.status(200).json({message: error.message});
+        res.status(200).json({message: "user successfully deleted"});
     } 
 });
 
