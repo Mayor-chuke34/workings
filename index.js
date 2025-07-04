@@ -1,7 +1,7 @@
 const  express = require ('express');
 const  mongoose = require ('mongoose') ;
 const Product = require('./models/product.model.js');
-const Users = require('./models/users.model.js');
+const Users = require('./models/user.model.js');
 
 const app = express();
 const PORT = 3000;
@@ -72,49 +72,59 @@ app.delete("/api/products/id", async (req,res) => {
 });
 
 
-app.post('/api/users',async (req, res) =>{
+app.post("/api/users",async (req, res) =>{
     try {
-        const users = await Users.create(req.body);
-        res.status(200).json(users);
+        const user = await User.create(req.body);
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({message:error.message});
     };
 });
 
-app.get('/api/users',async (req, res) =>{
+app.get("/api/user",async (req, res) =>{
     try {
-        const users = await users.find({});
-        res.status(200).json(users);
+        const user = await User.find({});
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({message:error.message});
     };
+});
+
+app.get('/api/users/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const users = await Users.findById(id);
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
 });
 
 app.put("/api/users/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const users = await Users.findByIdAndUpdate(id, req.body);
+        const user = await Users.findByIdAndUpdate(id, req.body);
 
-        if (!users) {
-            return res.status(404).json({message: "users not found"});
+        if (!user) {
+            return res.status(404).json({message: "user not found"});
         }
         
-        const updatedusers = await users.findById(id);
-        res.status(200).json(updatedusers)
+        const updateduser = await User.findById(id);
+        res.status(200).json(updateduser)
     } catch (error) {
         res.status(200).json({message: error.message});
     } 
 });
 
-app.delete("/api/users/id", async (req,res) => {
+app.delete("/api/user/id", async (req,res) => {
     try{
         const {id} = req.params;
-        const users = await users.findByIdAndDelete(id);
-        if (!users) {
+        const user = await users.findByIdAndDelete(id);
+        if (!user) {
             return res.status(404).json({message: "users not found"});
         }
-        const deleteproduct = await users.findById(id);
-        res.status(200).json(deleteusers)
+        const deleteproduct = await Users.findById(id);
+        res.status(200).json(deleteuser)
     } catch (error) {
         res.status(200).json({message: error.message});
     } 
