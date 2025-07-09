@@ -6,6 +6,12 @@ const User = require('./models/user.model.js');
 const app = express();
 const PORT = 3000;
 app.use (express.json ());
+app.use(express.urlencoded({extended:false}));
+
+ //routes
+app.use("/api/products", ProductRoute);
+
+
 
 app.get('/', (req, res) => {
     res.send('Hello, Express is running!');
